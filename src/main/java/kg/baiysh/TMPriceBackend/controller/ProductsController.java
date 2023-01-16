@@ -1,7 +1,6 @@
 package kg.baiysh.TMPriceBackend.controller;
 
-import kg.baiysh.TMPriceBackend.dto.ProductDTO;
-import kg.baiysh.TMPriceBackend.repo.ProductRepo;
+import kg.baiysh.TMPriceBackend.rest.RestClientProducts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -12,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.List;
 
 @Slf4j
 @CrossOrigin()
@@ -21,14 +18,15 @@ import java.util.List;
 @RequestMapping("/api/getProducts")
 @RequiredArgsConstructor
 public class ProductsController {
-    private final ProductRepo productRepo;
+    private final RestClientProducts restClientProducts;
 
     @GetMapping()
-    public ResponseEntity<List<ProductDTO>> getProducts() throws IOException {
-        log.info("Start getProducts");
-        List<ProductDTO> productDTO = productRepo.getProductDTO();
-        log.info("Finish getProducts size - {}", productDTO.size());
-        return new ResponseEntity<>(productDTO, HttpStatus.OK);
+    public ResponseEntity<Object> getProducts(HttpServletRequest request) {
+        ResponseEntity<Object> responseEntity = restClientProducts.get();
+        log.info("server response status 1s code{}", responseEntity.getStatusCode());
+        String addr = request.getRemoteAddr();
+        log.info("ip client {}", addr);
+        return new ResponseEntity<>(responseEntity.getBody(), HttpStatus.OK);
     }
 
     @GetMapping("/check")
