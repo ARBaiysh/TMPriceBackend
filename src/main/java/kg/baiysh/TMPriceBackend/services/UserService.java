@@ -30,7 +30,7 @@ public class UserService {
 
 
     public void createUser(UserDTO userDTO) {
-        if (userRepo.existsUserByUsername(userDTO.getLogin())) {
+        if (userRepo.existsUserByIdOrUsername(userDTO.getUid(), userDTO.getLogin())) {
             throw new ObjExistException("The user login " + userDTO.getLogin() + " already exist. Please check credentials");
         } else {
             User user = new User();
