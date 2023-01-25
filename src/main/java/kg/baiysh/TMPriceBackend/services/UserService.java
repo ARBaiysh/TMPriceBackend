@@ -62,9 +62,6 @@ public class UserService {
         return userRepo.findById(uid).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
-    public List<User> getAllUsers() {
-        return userRepo.findAll();
-    }
 
     public void uploadUsers() {
         List<UserDTO> body = restClientUsers.getUsers().getBody();
