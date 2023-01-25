@@ -4,7 +4,6 @@ import kg.baiysh.TMPriceBackend.dto.LoginRequestDTO;
 import kg.baiysh.TMPriceBackend.payload.response.JWTTokenSuccessResponse;
 import kg.baiysh.TMPriceBackend.security.JWTTokenProvider;
 import kg.baiysh.TMPriceBackend.security.SecurityConstants;
-import kg.baiysh.TMPriceBackend.services.UserService;
 import kg.baiysh.TMPriceBackend.validators.ResponseErrorValidation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,6 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")
-@PreAuthorize(value = "permitAll()")
 @RequiredArgsConstructor
 @CrossOrigin
 public class AuthController {
@@ -30,7 +28,6 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final ResponseErrorValidation responseErrorValidation;
-
 
 
     @PostMapping("/signin")

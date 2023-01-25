@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ public class ProductsController {
     private final RestClientProducts restClientProducts;
 
     @GetMapping()
+    @PreAuthorize(value = "hasAnyRole('ADMIN','USER')")
     public ResponseEntity<Object> getProducts(HttpServletRequest request) {
         ResponseEntity<Object> responseEntity = restClientProducts.get();
         log.info("server response status 1s code{}", responseEntity.getStatusCode());
@@ -30,6 +32,7 @@ public class ProductsController {
     }
 
     @GetMapping("/check")
+    @PreAuthorize(value = "hasAnyRole('ADMIN','USER')")
     public ResponseEntity<String> check(HttpServletRequest request) {
         String addr = request.getRemoteAddr();
         log.info("ip client {}", addr);
