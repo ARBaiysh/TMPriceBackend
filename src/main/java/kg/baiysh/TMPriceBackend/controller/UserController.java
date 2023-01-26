@@ -19,7 +19,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping()
-    @PreAuthorize(value = "hasAnyRole('ADMIN','USER')")
+    @PreAuthorize(value = "hasAnyRole('ADMIN','USER','SALESMAN','DEALER')")
     public ResponseEntity<UserResponseDTO> getCurrentUser(Principal principal) {
         UserResponseDTO currentUser = userService.getUserByPrincipal(principal);
         return new ResponseEntity<>(currentUser, HttpStatus.OK);

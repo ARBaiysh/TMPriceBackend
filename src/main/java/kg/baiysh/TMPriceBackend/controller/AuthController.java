@@ -31,7 +31,7 @@ public class AuthController {
 
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequestDTO loginRequestDTO, BindingResult bindingResult) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequestDTO loginRequestDTO, BindingResult bindingResult) throws InterruptedException {
         ResponseEntity<?> errors = responseErrorValidation.mapValidationService(bindingResult);
         if (!ObjectUtils.isEmpty(errors)) return errors;
 

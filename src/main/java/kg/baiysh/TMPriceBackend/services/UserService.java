@@ -112,11 +112,11 @@ public class UserService {
 
     private ERole convertRole(String role) {
         switch (role) {
-            case "ADMIN":
+            case "0":
                 return ERole.ROLE_ADMIN;
-            case "SALESMAN":
+            case "1":
                 return ERole.ROLE_SALESMAN;
-            case "DEALER":
+            case "2":
                 return ERole.ROLE_DEALER;
             default:
                 return ERole.ROLE_USER;
@@ -124,7 +124,7 @@ public class UserService {
     }
 
     private EStatus convertStatus(String status) {
-        if (status.equals("ACTIVE")) {
+        if (status.equals("0")) {
             return EStatus.ACTIVE;
         }
         return EStatus.BANNED;
