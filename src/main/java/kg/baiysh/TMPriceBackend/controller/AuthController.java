@@ -23,9 +23,9 @@ import javax.validation.Valid;
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 @CrossOrigin
+@PreAuthorize(value = "permitAll()")
 public class AuthController {
     private final JWTTokenProvider jwtTokenProvider;
-
     private final AuthenticationManager authenticationManager;
     private final ResponseErrorValidation responseErrorValidation;
 
@@ -43,5 +43,11 @@ public class AuthController {
         String jwt = SecurityConstants.TOKEN_PREFIX + jwtTokenProvider.generateToken(authentication);
         return ResponseEntity.ok(new JWTTokenSuccessResponse(true, jwt));
     }
+
+    @GetMapping("/check")
+    public ResponseEntity<String> checkServer(){
+        return ResponseEntity.ok("Server working !!!");
+    }
+
 }
 
