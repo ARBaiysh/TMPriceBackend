@@ -24,11 +24,17 @@ public class ProductsController {
     @GetMapping()
     @PreAuthorize(value = "hasAnyRole('ADMIN','USER','SALESMAN','DEALER')")
     public ResponseEntity<Object> getProducts(HttpServletRequest request) {
-        ResponseEntity<Object> responseEntity = restClientProducts.get();
-        log.info("server response status 1s code{}", responseEntity.getStatusCode());
-        String addr = request.getRemoteAddr();
-        log.info("ip client {}", addr);
-        return new ResponseEntity<>(responseEntity.getBody(), HttpStatus.OK);
+        ResponseEntity<Object> responseEntity = null;
+        try {
+            responseEntity = restClientProducts.get();
+            log.info("server response status 1s code{}", responseEntity.getStatusCode());
+            String addr = request.getRemoteAddr();
+            log.info("ip client {}", addr);
+            return new ResponseEntity<>(responseEntity.getBody(), HttpStatus.OK);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.REQUEST_TIMEOUT);
+        }
     }
 
     @GetMapping("/check")

@@ -14,4 +14,6 @@ public interface RestClientProducts {
 
     @RequestMapping(method = RequestMethod.GET, value = "/getProducts", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<Object> get();
+
+    ;
 }
