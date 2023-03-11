@@ -58,10 +58,6 @@ public class UserService {
         return UserFacade.userToUserResponseDTO(user);
     }
 
-    public User getUserByUid(String uid) {
-        return userRepo.findById(uid).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-    }
-
 
     public void uploadUsers() {
         List<UserDTO> body = restClientUsers.getUsers().getBody();
@@ -86,13 +82,41 @@ public class UserService {
     }
 
 
+    public UserResponseDTO addUser(UserDTO userDTO) {
+        if (userRepo.existsUserByIdOrUsername(userDTO.getUid(), userDTO.getLogin())) {
+            throw new ObjExistException("The user login " + userDTO.getLogin() + " already exist. Please check credentials");
+        } else {
+            User user = new User();
+            user.setId(userDTO.getUid());
+            user.setUsername(userDTO.getLogin());
+            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+            user.setFio(userDTO.getFio());
+            user.setRole(convertRole(userDTO.getRole()));
+            user.setStatus(convertStatus(userDTO.getStatus()));
+
+            log.info("Saving User {}", user.getFio());
+            User newUser = userRepo.save(user);
+            return UserFacade.userToUserResponseDTO(newUser);
+        }
+
+    }
+
+    public void delUser(String uid) {
+        if (userRepo.existsById(uid)) {
+            userRepo.deleteById(uid);
+            log.info("Del User {}", uid);
+        } else {
+            throw new ObjExistException("uid " + uid + " not found");
+        }
+    }
+
     private ERole convertRole(String role) {
         switch (role) {
-            case "ADMIN":
+            case "0":
                 return ERole.ROLE_ADMIN;
-            case "SALESMAN":
+            case "1":
                 return ERole.ROLE_SALESMAN;
-            case "DEALER":
+            case "2":
                 return ERole.ROLE_DEALER;
             default:
                 return ERole.ROLE_USER;
@@ -100,7 +124,7 @@ public class UserService {
     }
 
     private EStatus convertStatus(String status) {
-        if (status.equals("ACTIVE")) {
+        if (status.equals("0")) {
             return EStatus.ACTIVE;
         }
         return EStatus.BANNED;

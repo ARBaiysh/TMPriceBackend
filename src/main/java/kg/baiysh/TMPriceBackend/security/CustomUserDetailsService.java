@@ -27,7 +27,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         return build(user);
     }
 
-
     public static User build(User user) {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(user.getRole().name()));

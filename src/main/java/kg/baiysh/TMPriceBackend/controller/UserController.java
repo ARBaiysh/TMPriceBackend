@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
-
 @CrossOrigin
 @RestController
 @RequestMapping("/api/user")
@@ -20,7 +19,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping()
-    @PreAuthorize(value = "hasAnyRole('ADMIN','USER')")
+    @PreAuthorize(value = "hasAnyRole('ADMIN','USER','SALESMAN','DEALER')")
     public ResponseEntity<UserResponseDTO> getCurrentUser(Principal principal) {
         UserResponseDTO currentUser = userService.getUserByPrincipal(principal);
         return new ResponseEntity<>(currentUser, HttpStatus.OK);
@@ -34,11 +33,24 @@ public class UserController {
     }
 
     @PostMapping("/update")
-    @PreAuthorize(value = "hasAnyRole('ADMIN','USER')")
+    @PreAuthorize(value = "hasAnyRole('ADMIN')")
     public ResponseEntity<?> update(@RequestBody UserDTO userDTO) {
         UserResponseDTO userResponseDTO = userService.updateUser(userDTO);
         return new ResponseEntity<>(userResponseDTO, HttpStatus.OK);
     }
 
+    @PostMapping("/add")
+    @PreAuthorize(value = "hasAnyRole('ADMIN')")
+    public ResponseEntity<?> add(@RequestBody UserDTO userDTO) {
+        UserResponseDTO userResponseDTO = userService.addUser(userDTO);
+        return new ResponseEntity<>(userResponseDTO, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/del/{uid}")
+    @PreAuthorize(value = "hasAnyRole('ADMIN')")
+    public ResponseEntity<?> del(@PathVariable String uid) {
+        userService.delUser(uid);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
 

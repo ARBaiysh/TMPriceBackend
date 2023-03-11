@@ -22,7 +22,7 @@ public class ProductsController {
     private final RestClientProducts restClientProducts;
 
     @GetMapping()
-    @PreAuthorize(value = "hasAnyRole('ADMIN','USER')")
+    @PreAuthorize(value = "hasAnyRole('ADMIN','USER','SALESMAN','DEALER')")
     public ResponseEntity<Object> getProducts(HttpServletRequest request) {
         ResponseEntity<Object> responseEntity = restClientProducts.get();
         log.info("server response status 1s code{}", responseEntity.getStatusCode());
@@ -32,7 +32,7 @@ public class ProductsController {
     }
 
     @GetMapping("/check")
-    @PreAuthorize(value = "hasAnyRole('ADMIN','USER')")
+    @PreAuthorize(value = "hasAnyRole('ADMIN','USER','SALESMAN','DEALER')")
     public ResponseEntity<String> check(HttpServletRequest request) {
         String addr = request.getRemoteAddr();
         log.info("ip client {}", addr);
